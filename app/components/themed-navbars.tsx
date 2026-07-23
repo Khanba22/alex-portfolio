@@ -1,10 +1,24 @@
 "use client"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { useTheme } from "@/contexts/theme-context"
 import { Menu, X } from "lucide-react"
 
 interface MenuItem { href: string; label: string; active?: boolean }
 type P = { logo?: string; menuItems?: MenuItem[] }
+
+export function portfolioMenuItems(active?: string): MenuItem[] {
+  return [
+    { href: "/", label: "Home", active: active === "Home" },
+    { href: "/buy-sell", label: "Buy or sell", active: active === "Buy or sell" },
+    { href: "/custom-report", label: "Custom reports", active: active === "Custom reports" },
+    { href: "/get-featured", label: "Get featured", active: active === "Get featured" },
+    { href: "/articles", label: "Insights", active: active === "Insights" },
+    { href: "/deal-room", label: "Deal Room", active: active === "Deal Room" },
+    { href: "/playbook", label: "Playbook", active: active === "Playbook" },
+    { href: "mailto:alex@thealexkouba.com", label: "Email Alex", active: active === "Email Alex" },
+  ]
+}
 
 const defaultItems: MenuItem[] = [
   { href: '#', label: 'Home', active: true },
@@ -20,9 +34,9 @@ function Base({ logo = 'Brand', menuItems = defaultItems, headerStyle, linkStyle
   const [open, setOpen] = useState(false)
   return (
     <header style={{ padding: '0 16px', fontFamily, ...headerStyle }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
         <div style={{ fontWeight: 700, fontSize: '1rem', color: activeLinkStyle.color || colors.text.primary }}>{logo}</div>
-        <nav style={{ display: 'flex', gap: 24 }} className="hidden md:flex">
+        <nav style={{ display: 'flex', gap: 18 }} className="hidden md:flex">
           {menuItems.map(item => (
             <a key={item.label} href={item.href} style={{ textDecoration: 'none', fontSize: '0.8rem', transition: 'all 0.2s', ...(item.active ? activeLinkStyle : linkStyle) }}>{item.label}</a>
           ))}
@@ -124,7 +138,9 @@ export function OceanPearlNavbar(p: P) {
 // Font: Playfair Display — Velvet
 export function VelvetNavbar(p: P) {
   const { colors } = useTheme()
-  return <Base {...p} fontFamily="'Playfair Display', serif" headerStyle={{ backgroundColor: colors.background.dark, borderBottom: 'none', boxShadow: `0 4px 12px ${colors.primary}15` }} linkStyle={{ color: colors.text.muted, fontStyle: 'italic' }} activeLinkStyle={{ color: colors.primary, fontStyle: 'italic', fontWeight: 600 }} />
+  const pathname = usePathname()
+  const active = pathname === "/" ? "Home" : pathname.startsWith("/buy-sell") ? "Buy or sell" : pathname.startsWith("/custom-report") ? "Custom reports" : pathname.startsWith("/get-featured") ? "Get featured" : pathname.startsWith("/articles") ? "Insights" : pathname.startsWith("/deal-room") ? "Deal Room" : pathname.startsWith("/playbook") ? "Playbook" : undefined
+  return <Base {...p} menuItems={portfolioMenuItems(active)} fontFamily="'Playfair Display', serif" headerStyle={{ backgroundColor: colors.background.dark, borderBottom: 'none', boxShadow: `0 4px 12px ${colors.primary}15` }} linkStyle={{ color: colors.text.muted, fontStyle: 'italic' }} activeLinkStyle={{ color: colors.primary, fontStyle: 'italic', fontWeight: 600 }} />
 }
 
 // Font: Libre Baskerville — Cinematic Noir

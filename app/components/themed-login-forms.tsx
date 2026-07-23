@@ -49,7 +49,7 @@ function BaseLoginForm({ formStyle, headingStyle, labelStyle, inputStyle, button
       </div>
       <button type="submit" style={buttonStyle}>Sign In</button>
       <p style={{ textAlign: 'center', marginTop: 16, fontSize: '0.8rem', ...linkStyle }}>
-        Don't have an account? <a href="#" style={{ color: buttonStyle.backgroundColor as string || buttonStyle.background as string, textDecoration: 'none', fontWeight: 600 }}>Sign Up</a>
+        Don&apos;t have an account? <a href="#" style={{ color: buttonStyle.backgroundColor as string || buttonStyle.background as string, textDecoration: 'none', fontWeight: 600 }}>Sign Up</a>
       </p>
     </form>
   )

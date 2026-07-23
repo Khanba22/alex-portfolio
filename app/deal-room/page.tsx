@@ -1,0 +1,13 @@
+"use client"
+
+import Link from "next/link"
+import { ArrowLeft, ArrowUpRight, Check } from "lucide-react"
+import { VelvetNavbar } from "../components/themed-navbars"
+import VelvetBadge from "../components/velvet-badge"
+import { useTheme } from "../contexts/theme-context"
+
+export default function DealRoomPage() {
+  const { colors } = useTheme()
+  return <main style={{ backgroundColor: colors.background.dark, color: colors.text.primary }} className="min-h-screen"><VelvetNavbar logo="AK / Toronto" menuItems={[{ href: "/#work", label: "Work with me" }, { href: "/articles", label: "Insights" }, { href: "/deal-room", label: "Deal Room", active: true }]} /><section className="mx-auto max-w-7xl px-6 pb-24 pt-16 md:px-10 md:pb-32 md:pt-24"><Link href="/" style={{ color: colors.text.muted }} className="mb-16 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.16em]"><ArrowLeft size={14} /> Back home</Link><div className="grid gap-14 md:grid-cols-[1fr_.8fr] md:items-end"><div><VelvetBadge>Private community</VelvetBadge><h1 style={{ fontFamily: "Georgia, serif" }} className="mt-7 text-6xl leading-[.92] md:text-8xl">The Deal Room<br /><em style={{ color: colors.primary }}>Toronto.</em></h1><p style={{ color: colors.text.secondary }} className="mt-8 max-w-xl text-lg leading-8">The private network for GTA owners, buyers & investors.</p><p style={{ color: colors.text.muted }} className="mt-3 max-w-lg text-sm leading-7">Live deal flow, market intel and warm introductions — get in the room.</p><a href="https://www.skool.com/toronto-deal-room-2148" target="_blank" rel="noreferrer" style={{ background: colors.gradients.primary, color: colors.background.dark }} className="mt-9 inline-flex items-center gap-2 px-6 py-4 text-[10px] font-bold uppercase tracking-[.18em]">Join now <ArrowUpRight size={15} /></a></div><div style={{ backgroundColor: colors.background.main, border: `1px solid ${colors.border}` }} className="p-8 md:p-10"><p style={{ color: colors.primary }} className="text-[10px] font-bold uppercase tracking-[.2em]">Inside the room</p><ul className="mt-7 space-y-5">{["Live GTA deal flow", "Market intel before it becomes headlines", "Warm introductions to owners and buyers", "A sharper room for your next move"].map((item) => <li key={item} className="flex gap-3 text-sm"><Check style={{ color: colors.primary }} size={17} /><span style={{ color: colors.text.secondary }}>{item}</span></li>)}</ul><p style={{ color: colors.text.muted, borderTop: `1px solid ${colors.border}` }} className="mt-8 pt-6 text-xs leading-6">Membership pricing and access details are kept on the community page so they stay current.</p></div></div></section></main>
+}
+
