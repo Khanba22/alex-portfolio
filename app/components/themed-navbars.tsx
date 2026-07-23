@@ -32,24 +32,94 @@ function Base({ logo = 'Brand', menuItems = defaultItems, headerStyle, linkStyle
 }) {
   const { colors } = useTheme()
   const [open, setOpen] = useState(false)
+
   return (
-    <header style={{ padding: '0 16px', fontFamily, ...headerStyle }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
-        <div style={{ fontWeight: 700, fontSize: '1rem', color: activeLinkStyle.color || colors.text.primary }}>{logo}</div>
-        <nav style={{ display: 'flex', gap: 18 }} className="hidden md:flex">
+    <header style={{ padding: '0 20px', fontFamily, ...headerStyle, position: 'relative', zIndex: 40 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
+        <a href="/" style={{ textDecoration: 'none', fontWeight: 700, fontSize: '1.1rem', color: activeLinkStyle.color || colors.text.primary, letterSpacing: '-0.02em' }}>
+          {logo}
+        </a>
+
+        {/* Desktop Nav */}
+        <nav style={{ gap: 20 }} className="hidden md:flex items-center">
           {menuItems.map(item => (
-            <a key={item.label} href={item.href} style={{ textDecoration: 'none', fontSize: '0.8rem', transition: 'all 0.2s', ...(item.active ? activeLinkStyle : linkStyle) }}>{item.label}</a>
+            <a key={item.label} href={item.href} style={{ textDecoration: 'none', fontSize: '0.8rem', transition: 'all 0.2s', ...(item.active ? activeLinkStyle : linkStyle) }}>
+              {item.label}
+            </a>
           ))}
         </nav>
-        <button className="md:hidden" onClick={() => setOpen(!open)} style={{ color: colors.text.primary, background: 'none', border: 'none', cursor: 'pointer' }}>
-          {open ? <X size={20} /> : <Menu size={20} />}
+
+        {/* Mobile Hamburger Toggle Button */}
+        <button
+          type="button"
+          aria-label="Toggle navigation menu"
+          className="flex md:hidden items-center justify-center p-2.5 rounded-lg border transition-colors"
+          onClick={() => setOpen(!open)}
+          style={{
+            color: colors.text.primary,
+            backgroundColor: `${colors.background.main}cc`,
+            borderColor: colors.border,
+          }}
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
+
+      {/* Mobile Hamburger Drawer */}
       {open && (
-        <div className="md:hidden" style={{ paddingBottom: 12 }}>
-          {menuItems.map(item => (
-            <a key={item.label} href={item.href} style={{ display: 'block', padding: '8px 0', textDecoration: 'none', fontSize: '0.85rem', ...(item.active ? activeLinkStyle : linkStyle) }}>{item.label}</a>
-          ))}
+        <div
+          className="md:hidden absolute left-0 right-0 top-full border-b shadow-2xl backdrop-blur-xl transition-all duration-300"
+          style={{
+            backgroundColor: `${colors.background.dark}f5`,
+            borderColor: colors.border,
+            padding: '20px 24px 28px 24px',
+          }}
+        >
+          <div className="mb-3 flex items-center justify-between pb-3 border-b border-white/10">
+            <span style={{ color: colors.primary }} className="text-[10px] font-bold uppercase tracking-[0.22em]">
+              Navigation
+            </span>
+            <span style={{ color: colors.text.muted }} className="text-[10px] uppercase tracking-wider">
+              AK / Toronto
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            {menuItems.map(item => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                style={{
+                  textDecoration: 'none',
+                  fontSize: '0.95rem',
+                  padding: '12px 14px',
+                  borderRadius: '8px',
+                  transition: 'background-color 0.2s ease',
+                  backgroundColor: item.active ? `${colors.primary}18` : 'transparent',
+                  borderLeft: item.active ? `3px solid ${colors.primary}` : '3px solid transparent',
+                  ...(item.active ? activeLinkStyle : linkStyle),
+                }}
+                className="flex items-center justify-between font-medium"
+              >
+                <span>{item.label}</span>
+                {item.active && (
+                  <span style={{ color: colors.primary }} className="text-xs">●</span>
+                )}
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-white/10 flex flex-col gap-2">
+            <a
+              href="mailto:alex@thealexkouba.com?subject=Discovery call"
+              onClick={() => setOpen(false)}
+              style={{ background: colors.gradients.primary, color: colors.background.dark }}
+              className="w-full text-center py-3 text-[11px] font-bold uppercase tracking-[.18em] rounded-lg"
+            >
+              Book Discovery Call
+            </a>
+          </div>
         </div>
       )}
     </header>
